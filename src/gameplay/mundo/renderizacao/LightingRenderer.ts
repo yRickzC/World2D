@@ -25,7 +25,7 @@ export class LightingRenderer {
 
   renderLighting(
     ctx: CanvasRenderingContext2D,
-    player: Player,
+    player: Player | null | undefined,
     camera: Camera,
     width: number,
     height: number,
@@ -33,8 +33,8 @@ export class LightingRenderer {
     timeHour: number,
     time: number
   ) {
-    const screenPlayerX = width / 2 + (player.x - camera.x) * zoom;
-    const screenPlayerY = height / 2 + (player.y - camera.y) * zoom;
+    const screenFocusX = player ? width / 2 + (player.x - camera.x) * zoom : width / 2;
+    const screenFocusY = player ? height / 2 + (player.y - camera.y) * zoom : height / 2;
 
     // Night factor: 1.0 between 21:00 and 04:30
     let night = 0;
@@ -83,11 +83,11 @@ export class LightingRenderer {
       ctx.fillRect(0, 0, width, height);
 
       const grad = ctx.createRadialGradient(
-        screenPlayerX,
-        screenPlayerY,
+        screenFocusX,
+        screenFocusY,
         width * 0.22,
-        screenPlayerX,
-        screenPlayerY,
+        screenFocusX,
+        screenFocusY,
         width * 0.8
       );
       grad.addColorStop(0, 'rgba(0, 0, 0, 0)');
@@ -110,8 +110,8 @@ export class LightingRenderer {
           const sx = s.xPct * width;
           const sy = s.yPct * height;
 
-          const distToPlayer = Math.hypot(sx - screenPlayerX, sy - screenPlayerY);
-          if (distToPlayer < 120 * zoom) continue;
+          const distToFocus = Math.hypot(sx - screenFocusX, sy - screenFocusY);
+          if (player && distToFocus < 120 * zoom) continue;
 
           const twinkle = 0.4 + 0.6 * Math.sin(time * s.speed + s.phase);
           ctx.globalAlpha = starAlphaBase * twinkle * 0.85;
@@ -125,8 +125,8 @@ export class LightingRenderer {
       if (night > 0.3) {
         ctx.fillStyle = '#fef08a';
         for (let f = 0; f < 10; f++) {
-          const fx = screenPlayerX + Math.sin(time * 0.001 + f * 1.5) * (140 + f * 22) * zoom;
-          const fy = screenPlayerY + Math.cos(time * 0.0012 + f * 2.1) * (100 + f * 18) * zoom;
+          const fx = screenFocusX + Math.sin(time * 0.001 + f * 1.5) * (140 + f * 22) * zoom;
+          const fy = screenFocusY + Math.cos(time * 0.0012 + f * 2.1) * (100 + f * 18) * zoom;
           const fGlow = 0.3 + 0.7 * Math.sin(time * 0.003 + f * 2.0);
           ctx.globalAlpha = night * fGlow * 0.75;
           ctx.beginPath();
@@ -135,27 +135,34 @@ export class LightingRenderer {
         }
       }
 
-      // Player Lantern + Night Darkness Radial Cutout
-      const flicker = Math.sin(time * 0.008) * 3 + Math.cos(time * 0.016) * 2;
-      const lanternRadius = (165 + flicker) * zoom;
+      if (player) {
+        // Player Lantern + Night Darkness Radial Cutout
+        const flicker = Math.sin(time * 0.008) * 3 + Math.cos(time * 0.016) * 2;
+        const lanternRadius = (165 + flicker) * zoom;
 
-      const lightGrad = ctx.createRadialGradient(
-        screenPlayerX,
-        screenPlayerY,
-        15 * zoom,
-        screenPlayerX,
-        screenPlayerY,
-        lanternRadius
-      );
+        const lightGrad = ctx.createRadialGradient(
+          screenFocusX,
+          screenFocusY,
+          15 * zoom,
+          screenFocusX,
+          screenFocusY,
+          lanternRadius
+        );
 
-      lightGrad.addColorStop(0, `rgba(254, 240, 138, ${(0.18 * night).toFixed(3)})`);
-      lightGrad.addColorStop(0.25, `rgba(253, 224, 71, ${(0.06 * night).toFixed(3)})`);
-      lightGrad.addColorStop(0.65, `rgba(15, 23, 42, ${(0.68 * night).toFixed(3)})`);
-      lightGrad.addColorStop(1, `rgba(8, 14, 30, ${(0.91 * night).toFixed(3)})`);
+        lightGrad.addColorStop(0, `rgba(254, 240, 138, ${(0.18 * night).toFixed(3)})`);
+        lightGrad.addColorStop(0.25, `rgba(253, 224, 71, ${(0.06 * night).toFixed(3)})`);
+        lightGrad.addColorStop(0.65, `rgba(15, 23, 42, ${(0.68 * night).toFixed(3)})`);
+        lightGrad.addColorStop(1, `rgba(8, 14, 30, ${(0.91 * night).toFixed(3)})`);
 
-      ctx.globalAlpha = 1.0;
-      ctx.fillStyle = lightGrad;
-      ctx.fillRect(0, 0, width, height);
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = lightGrad;
+        ctx.fillRect(0, 0, width, height);
+      } else {
+        // Free-camera ambient night overlay
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = `rgba(10, 16, 32, ${(0.82 * night).toFixed(3)})`;
+        ctx.fillRect(0, 0, width, height);
+      }
 
       ctx.restore();
     }

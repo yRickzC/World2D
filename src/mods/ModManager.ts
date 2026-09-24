@@ -3,6 +3,8 @@
  * Primary state management and repository for Mod Packages and Core in the game and Mod Dev studio.
  * Handles persistence (localStorage), package lifecycle, CRUD, import/export, and synchronization.
  */
+import JSZip from 'jszip';
+import { ModDependencyResolver } from './ModDependency';
 import { ModLoader, globalModLoader } from './ModLoader';
 import { ModPackageHelper } from './ModPackage';
 import { globalModRegistries, ModRegistryHub } from './ModRegistry';
@@ -258,6 +260,23 @@ export class ModManager {
   }
 
   /**
+   * Saves and persists an updated ModPackage.
+   */
+  saveMod(pkg: ModPackage): { success: boolean; error?: string } {
+    pkg.manifest.updatedAt = Date.now();
+    if (pkg.isCore || pkg.manifest.id === 'core') {
+      this.corePackage = pkg;
+      this.saveCoreToStorage(this.corePackage);
+    } else {
+      this.modPackages.set(pkg.manifest.id, pkg);
+      this.savePackagesToStorage();
+    }
+
+    this.reloadAll();
+    return { success: true };
+  }
+
+  /**
    * 5. DUPLICAR MOD
    */
   duplicateMod(sourceId: string, newId: string, newName?: string): { success: boolean; error?: string; pkg?: ModPackage } {
@@ -281,14 +300,52 @@ export class ModManager {
   }
 
   /**
+   * Identifies if a mod package belongs to Core and is protected against deletion.
+   * Determined strictly through metadata/data fields (e.g. isCore === true or id === 'core'), never by user-facing name.
+   */
+  isProtectedMod(pkgOrId: ModPackage | string): boolean {
+    const pkg = typeof pkgOrId === 'string' ? this.getPackage(pkgOrId) : pkgOrId;
+    if (!pkg) return false;
+    return Boolean(pkg.isCore || pkg.manifest.id === 'core');
+  }
+
+  /**
+   * Verifies if a mod can be safely deleted.
+   * Checks Core protection and verifies whether any other mod depends on it.
+   */
+  canDeleteMod(modId: string): { allowed: boolean; reason?: string } {
+    const pkg = this.getPackage(modId);
+    if (!pkg) {
+      return { allowed: false, reason: `Mod "${modId}" não encontrado.` };
+    }
+    if (this.isProtectedMod(pkg)) {
+      return {
+        allowed: false,
+        reason: 'O Core é o núcleo do jogo e está protegido contra exclusão.',
+      };
+    }
+
+    // Check if any other mod depends on this mod
+    const allManifests = this.getAllPackages().map((p) => p.manifest);
+    const dependents = ModDependencyResolver.getDependents(modId, allManifests);
+    if (dependents.length > 0) {
+      const dependentNames = dependents.map((d) => `"${d.name}" (${d.id})`).join(', ');
+      return {
+        allowed: false,
+        reason: `Não é possível excluir o mod "${pkg.manifest.name}": os seguintes mods dependem dele: ${dependentNames}.`,
+      };
+    }
+
+    return { allowed: true };
+  }
+
+  /**
    * 6. EXCLUIR MOD
    */
   deleteMod(modId: string): { success: boolean; error?: string } {
-    if (modId === 'core') {
-      return { success: false, error: 'O Core é o núcleo do jogo e está protegido contra exclusão.' };
-    }
-    if (!this.modPackages.has(modId)) {
-      return { success: false, error: `Mod "${modId}" não encontrado.` };
+    const check = this.canDeleteMod(modId);
+    if (!check.allowed) {
+      return { success: false, error: check.reason };
     }
 
     this.modPackages.delete(modId);
@@ -303,7 +360,7 @@ export class ModManager {
   }
 
   /**
-   * 7. IMPORTAR MOD
+   * 7. IMPORTAR MOD (via JSON string or object)
    */
   importMod(input: string | ModPackage): { success: boolean; error?: string; report?: ModValidationReport } {
     try {
@@ -316,7 +373,7 @@ export class ModManager {
       }
 
       // Validate package
-      const report = ModValidator.validate(parsed, this.getAllPackages());
+      const report = ModValidator.validate(parsed, this.getAllPackages(), { isNewImport: true });
       if (!report.valid) {
         const firstErr = report.issues.find((i) => i.severity === 'error')?.message || 'Validação falhou';
         return { success: false, error: `Mod inválido: ${firstErr}`, report };
@@ -330,6 +387,170 @@ export class ModManager {
       return { success: true, report };
     } catch (e: any) {
       return { success: false, error: `Falha ao processar JSON: ${e.message}` };
+    }
+  }
+
+  /**
+   * 7.1 IMPORTAR MOD VIA ZIP
+   * Validates zip archive, extracts and parses mod.json and content directories,
+   * performs full audit via ModValidator and ModDependencyResolver,
+   * checks for ID collisions and missing dependencies,
+   * and registers the mod atomically (no partial imports).
+   */
+  async importModFromZip(
+    zipInput: File | ArrayBuffer | Blob
+  ): Promise<{ success: boolean; error?: string; pkg?: ModPackage; report?: ModValidationReport }> {
+    try {
+      const zip = await JSZip.loadAsync(zipInput);
+
+      // 1. Find mod.json file inside ZIP
+      let modJsonEntry: JSZip.JSZipObject | null = null;
+      let modJsonPath = '';
+
+      for (const [relativePath, fileObj] of Object.entries(zip.files)) {
+        if (fileObj.dir) continue;
+        if (relativePath === 'mod.json' || relativePath.endsWith('/mod.json')) {
+          modJsonEntry = fileObj;
+          modJsonPath = relativePath;
+          break;
+        }
+      }
+
+      if (!modJsonEntry) {
+        return {
+          success: false,
+          error: 'Arquivo mod.json não encontrado dentro do arquivo ZIP.',
+        };
+      }
+
+      // Read and parse mod.json
+      let parsedJson: any;
+      try {
+        const jsonText = await modJsonEntry.async('string');
+        parsedJson = JSON.parse(jsonText);
+      } catch (err: any) {
+        return {
+          success: false,
+          error: `Erro ao decodificar mod.json: ${err.message}`,
+        };
+      }
+
+      // Prefix directory if mod is contained in a subfolder (e.g. "my_mod/mod.json" -> "my_mod/")
+      const prefix = modJsonPath.includes('/')
+        ? modJsonPath.substring(0, modJsonPath.lastIndexOf('/') + 1)
+        : '';
+
+      // Determine manifest and initial content
+      const manifest: ModManifest = parsedJson.manifest || {
+        id: parsedJson.id,
+        name: parsedJson.name,
+        version: parsedJson.version,
+        author: parsedJson.author || 'Autor Desconhecido',
+        description: parsedJson.description || '',
+        dependencies: parsedJson.dependencies || { core: '>=1.0.0' },
+        createdAt: parsedJson.createdAt || Date.now(),
+        updatedAt: Date.now(),
+      };
+
+      const initialContent = parsedJson.content || {};
+
+      const content = {
+        blocks: [...(initialContent.blocks || [])],
+        items: [...(initialContent.items || [])],
+        entities: [...(initialContent.entities || [])],
+        biomes: [...(initialContent.biomes || [])],
+        surfaces: [...(initialContent.surfaces || [])],
+        components: [...(initialContent.components || [])],
+        recipes: [...(initialContent.recipes || [])],
+        tags: [...(initialContent.tags || [])],
+        patches: [...(initialContent.patches || [])],
+        assets: { ...(initialContent.assets || {}) },
+      };
+
+      // Also read any separate files under content folders (e.g. prefix + 'blocks/', etc.)
+      const contentCategories: (keyof typeof content)[] = [
+        'blocks',
+        'items',
+        'entities',
+        'biomes',
+        'surfaces',
+        'components',
+        'recipes',
+        'tags',
+        'patches',
+      ];
+
+      for (const cat of contentCategories) {
+        // Look for cat.json (e.g. blocks.json)
+        const catFile = zip.file(`${prefix}${cat}.json`);
+        if (catFile) {
+          try {
+            const rawCat = await catFile.async('string');
+            const parsedCat = JSON.parse(rawCat);
+            if (Array.isArray(parsedCat)) {
+              content[cat] = [...content[cat], ...parsedCat];
+            }
+          } catch (e) {
+            console.warn(`[ModManager] Error parsing ${cat}.json from zip`, e);
+          }
+        }
+
+        // Look for files inside folder cat/ (e.g. blocks/stone.json)
+        const folderPrefix = `${prefix}${cat}/`;
+        for (const [entryPath, entryObj] of Object.entries(zip.files)) {
+          if (entryObj.dir || !entryPath.startsWith(folderPrefix) || !entryPath.endsWith('.json')) {
+            continue;
+          }
+          try {
+            const raw = await entryObj.async('string');
+            const parsedObj = JSON.parse(raw);
+            if (Array.isArray(parsedObj)) {
+              content[cat] = [...content[cat], ...parsedObj];
+            } else if (parsedObj && typeof parsedObj === 'object') {
+              content[cat].push(parsedObj);
+            }
+          } catch (e) {
+            console.warn(`[ModManager] Error parsing ${entryPath} from zip`, e);
+          }
+        }
+      }
+
+      // Assemble complete candidate ModPackage
+      const candidatePkg: ModPackage = {
+        manifest,
+        content,
+        isCore: false,
+      };
+
+      // Validate through ModValidator with isNewImport check
+      const report = ModValidator.validate(candidatePkg, this.getAllPackages(), { isNewImport: true });
+
+      if (!report.valid) {
+        const errorIssue = report.issues.find((i) => i.severity === 'error');
+        const errorMessage = errorIssue ? errorIssue.message : 'Falha na validação do mod.';
+        return {
+          success: false,
+          error: errorMessage,
+          report,
+        };
+      }
+
+      // Validation passed completely! Atomically register and save
+      this.modPackages.set(candidatePkg.manifest.id, candidatePkg);
+      this.savePackagesToStorage();
+      this.setActivePackageId(candidatePkg.manifest.id);
+      this.reloadAll();
+
+      return {
+        success: true,
+        pkg: candidatePkg,
+        report,
+      };
+    } catch (err: any) {
+      return {
+        success: false,
+        error: `Arquivo ZIP corrompido ou ilegível: ${err.message}`,
+      };
     }
   }
 

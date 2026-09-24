@@ -72,7 +72,7 @@ export class ModDependencyResolver {
           errors.push({
             severity: 'error',
             category: 'dependencies',
-            message: `Mod "${m.name}" (${m.id}) requires missing dependency "${depId}" (${depVersion}).`,
+            message: `Unknown dependency: ${depId} ${depVersion}`,
             objectId: m.id,
             field: `dependencies.${depId}`,
             suggestion: `Install or create mod "${depId}" with version ${depVersion}.`,
@@ -81,7 +81,7 @@ export class ModDependencyResolver {
           errors.push({
             severity: 'error',
             category: 'dependencies',
-            message: `Mod "${m.name}" requires "${depId}" ${depVersion}, but installed version is ${depMod.version}.`,
+            message: `Incompatible dependency: "${depId}" requires ${depVersion}, but installed is ${depMod.version}.`,
             objectId: m.id,
             field: `dependencies.${depId}`,
           });
@@ -132,5 +132,15 @@ export class ModDependencyResolver {
       loadOrder: order,
       errors,
     };
+  }
+
+  /**
+   * Returns all manifests that declare a dependency on targetModId.
+   */
+  static getDependents(targetModId: string, manifests: ModManifest[]): ModManifest[] {
+    return manifests.filter((m) => {
+      if (!m.dependencies) return false;
+      return Object.prototype.hasOwnProperty.call(m.dependencies, targetModId);
+    });
   }
 }

@@ -6,7 +6,8 @@ export type TileType =
   | 'dense_grass'
   | 'dug_dirt'
   | 'wood_plank'
-  | 'stone';
+  | 'stone'
+  | string;
 
 export type FoliageType = 'tree_oak' | 'tree_pine' | 'bush' | 'tall_grass' | 'flower';
 

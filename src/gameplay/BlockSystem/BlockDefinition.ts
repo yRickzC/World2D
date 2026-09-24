@@ -7,7 +7,7 @@ import {
   SolidComponent,
   TopTextureComponent,
 } from './components';
-import { BlockCategory, BlockDefinitionJSON } from './types';
+import { BlockCategory, BlockDefinitionJSON, BlockTextureDefinition } from './types';
 
 export type BlockComponentConstructor<T extends BaseBlockComponent = BaseBlockComponent> =
   | (abstract new (...args: any[]) => T)
@@ -17,6 +17,7 @@ export class BlockDefinition {
   readonly id: string;
   readonly name: string;
   readonly category: BlockCategory | string;
+  readonly texture: BlockTextureDefinition;
 
   private readonly tags: Set<string>;
   private readonly components: Map<string, BaseBlockComponent>;
@@ -27,7 +28,8 @@ export class BlockDefinition {
     name: string,
     category: BlockCategory | string = 'natural',
     tags: string[] = [],
-    components: BaseBlockComponent[] = []
+    components: BaseBlockComponent[] = [],
+    texture?: BlockTextureDefinition
   ) {
     this.id = id;
     this.name = name;
@@ -43,6 +45,22 @@ export class BlockDefinition {
 
     // Sort by priority (ascending: lowest number runs first)
     this.prioritySortedComponents = [...components].sort((a, b) => a.priority - b.priority);
+
+    if (texture) {
+      this.texture = texture;
+    } else {
+      const emoji = (this.components.get('emojiiconcomponent') as any)?.emoji || '🧱';
+      const colorComp = this.components.get('colortexturecomponent') as any;
+      const topComp = this.components.get('toptexturecomponent') as any;
+      this.texture = {
+        type: emoji ? 'emoji' : 'color',
+        value: emoji,
+        size: 0.55,
+        backgroundColor: topComp?.primaryColor || colorComp?.primaryColor || '#64748b',
+        secondaryColor: colorComp?.secondaryColor || '#334155',
+        pattern: topComp?.pattern || colorComp?.pattern || 'solid',
+      };
+    }
   }
 
   hasTag(tag: string): boolean {
@@ -111,6 +129,7 @@ export class BlockDefinition {
       name: this.name,
       category: this.category,
       tags: this.getTags(),
+      texture: this.texture,
       components: unique.map((c) => ({
         id: c.id,
         type: c.type,

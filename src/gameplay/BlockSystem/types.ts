@@ -6,6 +6,20 @@ export type BlockCategory =
   | 'decoration'
   | 'ore';
 
+export type BlockTextureType = 'color' | 'emoji' | 'image' | 'svg';
+
+export interface BlockTextureDefinition {
+  type: BlockTextureType;
+  backgroundColor?: string | null;
+  background?: { color: string } | null;
+  secondaryColor?: string | null;
+  pattern?: string;
+  value?: string; // Emoji character for 'emoji'
+  size?: number; // 0.1 to 1.0 (default 1.0)
+  imageSrc?: string; // Data URL or asset path
+  svgContent?: string; // Raw SVG code
+}
+
 export interface BlockComponentSerializedData {
   id: string;
   type: string;
@@ -15,8 +29,10 @@ export interface BlockComponentSerializedData {
 export interface BlockDefinitionJSON {
   id: string;
   name: string;
+  description?: string;
   category?: BlockCategory | string;
   tags?: string[];
+  texture?: BlockTextureDefinition;
   components: BlockComponentSerializedData[];
 }
 

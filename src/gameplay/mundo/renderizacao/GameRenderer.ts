@@ -52,7 +52,7 @@ export class GameRenderer {
 
   render(
     chunkManager: ChunkManager,
-    player: Player,
+    player: Player | null | undefined,
     camera: Camera,
     particles: Particle[],
     floatingTexts: FloatingText[],
@@ -154,11 +154,13 @@ export class GameRenderer {
       }
     }
 
-    // Add player to queue
-    renderQueue.push({
-      yOrder: player.y + 12,
-      type: 'player',
-    });
+    // Add player to queue if present
+    if (player) {
+      renderQueue.push({
+        yOrder: player.y + 12,
+        type: 'player',
+      });
+    }
 
     // Add particles
     for (const p of particles) {
@@ -182,10 +184,10 @@ export class GameRenderer {
         } else {
           this.foliageRenderer.renderEntity(ctx, item.entity, gameTime, wind, isHighlighted);
         }
-      } else if (item.type === 'player') {
+      } else if (item.type === 'player' && player) {
         this.playerRenderer.renderPlayer(ctx, player, gameTime);
       } else if (item.type === 'dropped_item' && item.droppedItem) {
-        const pDist = Math.hypot(player.x - item.droppedItem.x, player.y - item.droppedItem.y);
+        const pDist = player ? Math.hypot(player.x - item.droppedItem.x, player.y - item.droppedItem.y) : 999;
         this.droppedItemRenderer.render(ctx, item.droppedItem, gameTime, pDist);
       } else if (item.type === 'elevated_block' && item.blockData) {
         this.tileRenderer.renderElevatedLayers(
@@ -200,9 +202,15 @@ export class GameRenderer {
       }
     }
 
-    // 4. Render Floating Collect Texts
+    // 4. Render Floating Collect / Damage Texts
     for (const ft of floatingTexts) {
-      const alpha = Math.max(0, 1 - ft.life / ft.maxLife);
+      if (!ft || !ft.text) continue;
+      const maxLife = typeof ft.maxLife === 'number' && ft.maxLife > 0 ? ft.maxLife : 1.0;
+      const life = typeof ft.life === 'number' ? ft.life : 0;
+      if (life >= maxLife) continue;
+      const alpha = Math.max(0, Math.min(1, 1 - life / maxLife));
+      if (alpha <= 0.01) continue;
+
       ctx.save();
       ctx.globalAlpha = alpha;
       ctx.translate(ft.x, ft.y);
@@ -216,7 +224,7 @@ export class GameRenderer {
       ctx.roundRect(-bgW / 2, -14, bgW, 18, 9);
       ctx.fill();
 
-      ctx.fillStyle = ft.color;
+      ctx.fillStyle = ft.color || '#ffffff';
       ctx.fillText(ft.text, 0, 0);
       ctx.restore();
     }

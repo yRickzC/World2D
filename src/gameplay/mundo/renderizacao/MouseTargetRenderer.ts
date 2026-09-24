@@ -9,83 +9,86 @@ export class MouseTargetRenderer {
    */
   renderInWorld(
     ctx: CanvasRenderingContext2D,
-    player: Player,
+    player: Player | null | undefined,
     target: MouseTarget,
     gameTime: number
   ) {
-    const { inRange, maxRange, tileX, tileY, entity, worldX, worldY, raycastEnd } = target;
+    const { maxRange, tileX, tileY, entity, worldX, worldY, raycastEnd } = target;
+    const inRange = player ? target.inRange : true;
 
-    // 1. Faint Player Interaction Range Boundary Ring (very subtle guidance)
-    ctx.save();
-    ctx.strokeStyle = inRange ? 'rgba(56, 189, 248, 0.12)' : 'rgba(239, 68, 68, 0.12)';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([6, 8]);
-    ctx.beginPath();
-    ctx.arc(player.x, player.y, maxRange, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.restore();
-
-    // 2. Raycast Line from Player to Target or Range Limit
-    ctx.save();
-    if (inRange) {
-      // Reached target within range
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
-      ctx.lineWidth = 1.2;
-      ctx.setLineDash([4, 4]);
+    // 1. Faint Player Interaction Range Boundary Ring (only if player exists)
+    if (player) {
+      ctx.save();
+      ctx.strokeStyle = inRange ? 'rgba(56, 189, 248, 0.12)' : 'rgba(239, 68, 68, 0.12)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([6, 8]);
       ctx.beginPath();
-      ctx.moveTo(player.x, player.y);
-      ctx.lineTo(worldX, worldY);
+      ctx.arc(player.x, player.y, maxRange, 0, Math.PI * 2);
       ctx.stroke();
+      ctx.restore();
 
-      // Target point dot
-      ctx.fillStyle = '#38bdf8';
-      ctx.beginPath();
-      ctx.arc(worldX, worldY, 3, 0, Math.PI * 2);
-      ctx.fill();
-    } else {
-      // Ray stops at max interaction range
-      ctx.strokeStyle = 'rgba(239, 68, 68, 0.45)';
-      ctx.lineWidth = 1.2;
-      ctx.setLineDash([4, 4]);
-      ctx.beginPath();
-      ctx.moveTo(player.x, player.y);
-      ctx.lineTo(raycastEnd.x, raycastEnd.y);
-      ctx.stroke();
+      // 2. Raycast Line from Player to Target or Range Limit
+      ctx.save();
+      if (inRange) {
+        // Reached target within range
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(player.x, player.y);
+        ctx.lineTo(worldX, worldY);
+        ctx.stroke();
 
-      // Perpendicular limit barrier at raycastEnd
-      const angle = Math.atan2(worldY - player.y, worldX - player.x);
-      const barLen = 6;
-      const perpX = -Math.sin(angle) * barLen;
-      const perpY = Math.cos(angle) * barLen;
+        // Target point dot
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(worldX, worldY, 3, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Ray stops at max interaction range
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.45)';
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(player.x, player.y);
+        ctx.lineTo(raycastEnd.x, raycastEnd.y);
+        ctx.stroke();
 
-      ctx.strokeStyle = '#ef4444';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([]);
-      ctx.beginPath();
-      ctx.moveTo(raycastEnd.x - perpX, raycastEnd.y - perpY);
-      ctx.lineTo(raycastEnd.x + perpX, raycastEnd.y + perpY);
-      ctx.stroke();
+        // Perpendicular limit barrier at raycastEnd
+        const angle = Math.atan2(worldY - player.y, worldX - player.x);
+        const barLen = 6;
+        const perpX = -Math.sin(angle) * barLen;
+        const perpY = Math.cos(angle) * barLen;
 
-      // Very faint trail from limit to cursor position
-      ctx.strokeStyle = 'rgba(239, 68, 68, 0.18)';
-      ctx.setLineDash([2, 5]);
-      ctx.beginPath();
-      ctx.moveTo(raycastEnd.x, raycastEnd.y);
-      ctx.lineTo(worldX, worldY);
-      ctx.stroke();
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(raycastEnd.x - perpX, raycastEnd.y - perpY);
+        ctx.lineTo(raycastEnd.x + perpX, raycastEnd.y + perpY);
+        ctx.stroke();
 
-      // Out-of-range small 'x' at cursor
-      ctx.strokeStyle = 'rgba(239, 68, 68, 0.6)';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([]);
-      ctx.beginPath();
-      ctx.moveTo(worldX - 3.5, worldY - 3.5);
-      ctx.lineTo(worldX + 3.5, worldY + 3.5);
-      ctx.moveTo(worldX + 3.5, worldY - 3.5);
-      ctx.lineTo(worldX - 3.5, worldY + 3.5);
-      ctx.stroke();
+        // Very faint trail from limit to cursor position
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.18)';
+        ctx.setLineDash([2, 5]);
+        ctx.beginPath();
+        ctx.moveTo(raycastEnd.x, raycastEnd.y);
+        ctx.lineTo(worldX, worldY);
+        ctx.stroke();
+
+        // Out-of-range small 'x' at cursor
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.6)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(worldX - 3.5, worldY - 3.5);
+        ctx.lineTo(worldX + 3.5, worldY + 3.5);
+        ctx.moveTo(worldX + 3.5, worldY - 3.5);
+        ctx.lineTo(worldX - 3.5, worldY + 3.5);
+        ctx.stroke();
+      }
+      ctx.restore();
     }
-    ctx.restore();
 
     // 3. Tile Highlight / Reticle
     const tx = tileX * TILE_SIZE;
@@ -185,6 +188,7 @@ export class MouseTargetRenderer {
     canvasWidth: number,
     canvasHeight: number
   ) {
+    if ((target as any).hideBadge) return;
     const { screenX, screenY, inRange, primaryAction, secondaryAction, distance, maxRange, entity } = target;
 
     // Only render badge if cursor is within canvas bounds

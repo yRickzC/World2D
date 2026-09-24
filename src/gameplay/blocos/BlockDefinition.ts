@@ -5,6 +5,7 @@ import {
   FluidComponent,
   SolidComponent,
 } from './componentes';
+import { BlockTextureDefinition } from '../BlockSystem/types';
 
 export type BlockComponentConstructor<T extends BlockComponent = BlockComponent> =
   | (abstract new (...args: any[]) => T)
@@ -14,6 +15,7 @@ export interface BlockDefinitionData {
   id: string;
   name: string;
   tags?: string[];
+  texture?: BlockTextureDefinition;
   components?: BlockComponent[];
 }
 
@@ -24,6 +26,7 @@ export interface BlockDefinitionData {
 export class BlockDefinition {
   readonly id: string;
   readonly name: string;
+  readonly texture: BlockTextureDefinition;
 
   private readonly tags: Set<string>;
   private readonly components: Map<string, BlockComponent>;
@@ -38,6 +41,22 @@ export class BlockDefinition {
       for (const comp of data.components) {
         this.components.set(comp.type, comp);
       }
+    }
+
+    if (data.texture) {
+      this.texture = data.texture;
+    } else {
+      const emoji = (data.components?.find((c: any) => c.type === 'EmojiIconComponent') as any)?.emoji;
+      const colorComp = data.components?.find((c: any) => c.type === 'ColorTextureComponent') as any;
+      const topComp = data.components?.find((c: any) => c.type === 'TopTextureComponent') as any;
+      this.texture = {
+        type: emoji ? 'emoji' : 'color',
+        value: emoji || '🧱',
+        size: 0.55,
+        backgroundColor: topComp?.primaryColor || colorComp?.primaryColor || '#64748b',
+        secondaryColor: colorComp?.secondaryColor || '#334155',
+        pattern: topComp?.pattern || colorComp?.pattern || 'solid',
+      };
     }
   }
 

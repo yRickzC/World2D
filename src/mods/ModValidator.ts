@@ -12,12 +12,38 @@ export class ModValidator {
    */
   static validate(
     pkg: ModPackage,
-    allPackages: ModPackage[] = []
+    allPackages: ModPackage[] = [],
+    options?: { isNewImport?: boolean }
   ): ModValidationReport {
     const issues: ValidationIssue[] = [];
     const checks: { title: string; passed: boolean; details?: string }[] = [];
 
     const { manifest, content, isCore } = pkg;
+
+    // 0. Check: If importing as new mod, ID must not already exist
+    if (options?.isNewImport && manifest?.id) {
+      if (manifest.id === 'core') {
+        issues.push({
+          severity: 'error',
+          category: 'conflicts',
+          message: 'Mod ID "core" is reserved for the core game system.',
+          objectId: manifest.id,
+          field: 'id',
+        });
+      } else {
+        const existing = allPackages.find((p) => p.manifest.id === manifest.id);
+        if (existing) {
+          issues.push({
+            severity: 'error',
+            category: 'conflicts',
+            message: `Mod ID already registered: ${manifest.id}`,
+            objectId: manifest.id,
+            field: 'id',
+            suggestion: 'Renomeie o ID no mod.json ou exclua o mod existente antes de importar.',
+          });
+        }
+      }
+    }
 
     // 1. Check: Manifest & mod.json
     let manifestValid = true;
