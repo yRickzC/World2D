@@ -1,0 +1,49 @@
+{
+  "id": "iron_axe",
+  "nome": "Machado de Ferro",
+  "categoria": "tool",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "emoji",
+        "value": "🪓",
+        "accentColor": "#94a3b8"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Machado de ferro forjado de alta durabilidade e corte afiado.",
+        "categoryName": "Ferramenta"
+      }
+    },
+    {
+      "id": "durability_01",
+      "type": "durability",
+      "data": {
+        "maxDurability": 250
+      }
+    },
+    {
+      "id": "tool_01",
+      "type": "tool",
+      "data": {
+        "toolType": "axe",
+        "strength": 8,
+        "damage": 5,
+        "speed": 1.9,
+        "effectiveTags": ["choppable", "wood", "foliage"]
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 1
+      }
+    }
+  ]
+}

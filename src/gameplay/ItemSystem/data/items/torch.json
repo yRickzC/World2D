@@ -1,0 +1,41 @@
+{
+  "id": "torch",
+  "nome": "Tocha de Campina",
+  "categoria": "material",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "svg",
+        "value": "🔥",
+        "accentColor": "#f59e0b",
+        "fill": "#f59e0b",
+        "svgPath": "M12 2c-1.5 2.5-3 5-3 7.5 0 2 1.5 3.5 3 4.5 1.5-1 3-2.5 3-4.5 0-2.5-1.5-5-3-7.5zm-1 12.5v7.5h2v-7.5c-.3.1-.7.2-1 .2s-.7-.1-1-.2z"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Tocha acesa com resina e carvão que projeta luz calorosa ao seu redor.",
+        "categoryName": "Iluminação"
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 64
+      }
+    },
+    {
+      "id": "block_item_01",
+      "type": "block_item",
+      "data": {
+        "blockIdToPlace": "torch",
+        "validTileTags": ["walkable", "ground", "solid"]
+      }
+    }
+  ]
+}

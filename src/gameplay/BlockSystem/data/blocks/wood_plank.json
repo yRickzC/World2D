@@ -1,0 +1,58 @@
+{
+  "id": "wood_plank",
+  "name": "Prancha de Madeira",
+  "category": "building",
+  "tags": ["solid", "wood", "choppable", "plank", "buildable"],
+  "components": [
+    {
+      "id": "emoji_plank",
+      "type": "EmojiIconComponent",
+      "data": { "emoji": "🪵" }
+    },
+    {
+      "id": "colortex_plank",
+      "type": "ColorTextureComponent",
+      "data": {
+        "primaryColor": "#b45309",
+        "secondaryColor": "#92400e",
+        "pattern": "plain"
+      }
+    },
+    {
+      "id": "toptex_plank",
+      "type": "TopTextureComponent",
+      "data": {
+        "primaryColor": "#d97706",
+        "secondaryColor": "#b45309",
+        "accentColor": "rgba(69, 26, 3, 0.25)",
+        "pattern": "wood_planks"
+      }
+    },
+    {
+      "id": "sidetex_plank",
+      "type": "SideTextureComponent",
+      "data": {
+        "primaryColor": "#92400e",
+        "secondaryColor": "#78350f",
+        "shadowColor": "rgba(0, 0, 0, 0.4)",
+        "pattern": "wood_planks",
+        "defaultWallHeight": 14
+      }
+    },
+    {
+      "id": "solid_plank",
+      "type": "SolidComponent",
+      "data": { "solid": true }
+    },
+    {
+      "id": "break_plank",
+      "type": "BreakableComponent",
+      "data": {
+        "hardness": 2,
+        "requiredToolTag": "axe",
+        "minToolStrength": 1,
+        "dropItems": [{ "type": "wood", "count": 1, "chance": 1.0 }]
+      }
+    }
+  ]
+}

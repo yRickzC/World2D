@@ -1,0 +1,21 @@
+{
+  "type": "block_item",
+  "name": "Block Item",
+  "version": "1.0.0",
+  "description": "Permite que o item seja colocado como um bloco no mundo",
+  "isDynamic": false,
+  "properties": {
+    "blockIdToPlace": {
+      "type": "string",
+      "required": true,
+      "default": "wood_plank",
+      "description": "ID do bloco do BlockDatabase a ser inserido no mapa"
+    },
+    "validTileTags": {
+      "type": "array",
+      "required": false,
+      "default": ["walkable", "ground", "dug"],
+      "description": "Tags de terreno válidas para colocação (separadas por vírgula)"
+    }
+  }
+}

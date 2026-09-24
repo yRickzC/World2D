@@ -1,0 +1,35 @@
+{
+  "type": "food",
+  "name": "Food",
+  "version": "1.0.0",
+  "description": "Propriedades nutricionais de alimentos consumíveis pelo jogador",
+  "isDynamic": false,
+  "properties": {
+    "energyRestored": {
+      "type": "number",
+      "required": false,
+      "default": 15,
+      "min": 0,
+      "description": "Pontos de energia restaurados ao ser consumido"
+    },
+    "healthRestored": {
+      "type": "number",
+      "required": false,
+      "default": 5,
+      "min": 0,
+      "description": "Pontos de vida recuperados ao ser consumido"
+    },
+    "prompt": {
+      "type": "string",
+      "required": false,
+      "default": "Comer com Botão Direito",
+      "description": "Mensagem descritiva de ação na barra de ferramentas"
+    },
+    "soundEffect": {
+      "type": "string",
+      "required": false,
+      "default": "eat",
+      "description": "Efeito sonoro acionado durante o consumo"
+    }
+  }
+}

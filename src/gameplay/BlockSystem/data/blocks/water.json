@@ -1,0 +1,40 @@
+{
+  "id": "water",
+  "name": "Água Rasa",
+  "category": "liquid",
+  "tags": ["fluid", "water"],
+  "components": [
+    {
+      "id": "emoji_water",
+      "type": "EmojiIconComponent",
+      "data": { "emoji": "💧" }
+    },
+    {
+      "id": "colortex_water",
+      "type": "ColorTextureComponent",
+      "data": {
+        "primaryColor": "#38bdf8",
+        "secondaryColor": "rgba(255, 255, 255, 0.35)",
+        "pattern": "wave"
+      }
+    },
+    {
+      "id": "toptex_water",
+      "type": "TopTextureComponent",
+      "data": {
+        "primaryColor": "#38bdf8",
+        "secondaryColor": "rgba(255, 255, 255, 0.4)",
+        "pattern": "wave"
+      }
+    },
+    {
+      "id": "fluid_water",
+      "type": "FluidComponent",
+      "data": {
+        "isFluid": true,
+        "swimSpeedMultiplier": 0.65,
+        "drownHazard": false
+      }
+    }
+  ]
+}

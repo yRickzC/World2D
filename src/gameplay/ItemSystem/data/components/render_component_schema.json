@@ -1,0 +1,27 @@
+{
+  "type": "render",
+  "name": "Render/Imagem",
+  "version": "1.0.0",
+  "description": "Representação visual do item (imagem, textura, cor)",
+  "isDynamic": false,
+  "properties": {
+    "imageUrl": {
+      "type": "string",
+      "required": false,
+      "default": "",
+      "description": "URL ou caminho da imagem/textura personalizada"
+    },
+    "accentColor": {
+      "type": "string",
+      "required": false,
+      "default": "#38bdf8",
+      "description": "Cor primária de destaque / fundo do item"
+    },
+    "label": {
+      "type": "string",
+      "required": false,
+      "default": "",
+      "description": "Rótulo ou sigla opcional"
+    }
+  }
+}

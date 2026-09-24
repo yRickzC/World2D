@@ -1,0 +1,58 @@
+{
+  "id": "dug_dirt",
+  "name": "Chão Cavado",
+  "category": "natural",
+  "tags": ["ground", "dug", "trench", "hollow", "walkable"],
+  "components": [
+    {
+      "id": "emoji_dug",
+      "type": "EmojiIconComponent",
+      "data": { "emoji": "🕳️" }
+    },
+    {
+      "id": "colortex_dug",
+      "type": "ColorTextureComponent",
+      "data": {
+        "primaryColor": "#2b1810",
+        "secondaryColor": "#452711",
+        "pattern": "plain"
+      }
+    },
+    {
+      "id": "toptex_dug",
+      "type": "TopTextureComponent",
+      "data": {
+        "primaryColor": "#2b1810",
+        "secondaryColor": "#452711",
+        "accentColor": "#150904",
+        "pattern": "dug_pit"
+      }
+    },
+    {
+      "id": "sidetex_dug",
+      "type": "SideTextureComponent",
+      "data": {
+        "primaryColor": "#382014",
+        "secondaryColor": "#22120b",
+        "shadowColor": "rgba(0, 0, 0, 0.5)",
+        "pattern": "dirt_depth",
+        "defaultWallHeight": 8
+      }
+    },
+    {
+      "id": "solid_dug",
+      "type": "SolidComponent",
+      "data": { "solid": false }
+    },
+    {
+      "id": "break_dug",
+      "type": "BreakableComponent",
+      "data": {
+        "hardness": 1,
+        "requiredToolTag": "shovel",
+        "minToolStrength": 1,
+        "dropItems": []
+      }
+    }
+  ]
+}

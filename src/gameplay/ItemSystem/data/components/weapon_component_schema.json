@@ -1,0 +1,37 @@
+{
+  "type": "weapon",
+  "name": "Weapon",
+  "version": "1.0.0",
+  "description": "Propriedades de combate e dano infligido a inimigos",
+  "isDynamic": false,
+  "properties": {
+    "attackDamage": {
+      "type": "number",
+      "required": true,
+      "default": 5,
+      "min": 1,
+      "description": "Quantidade de dano base aplicada por golpe"
+    },
+    "attackSpeed": {
+      "type": "number",
+      "required": false,
+      "default": 1.0,
+      "min": 0.1,
+      "description": "Velocidade de ataque por segundo"
+    },
+    "range": {
+      "type": "number",
+      "required": false,
+      "default": 48,
+      "min": 16,
+      "description": "Alcance máximo em pixels do ataque corpo a corpo"
+    },
+    "knockback": {
+      "type": "number",
+      "required": false,
+      "default": 10,
+      "min": 0,
+      "description": "Força de repulsão aplicada no alvo"
+    }
+  }
+}

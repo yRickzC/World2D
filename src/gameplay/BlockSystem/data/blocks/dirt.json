@@ -1,0 +1,56 @@
+{
+  "id": "dirt",
+  "name": "Terra Fértil",
+  "category": "natural",
+  "tags": ["ground", "soil", "walkable", "plantable", "diggable"],
+  "components": [
+    {
+      "id": "emoji_dirt",
+      "type": "EmojiIconComponent",
+      "data": { "emoji": "🟫" }
+    },
+    {
+      "id": "colortex_dirt",
+      "type": "ColorTextureComponent",
+      "data": {
+        "primaryColor": "#5c3a21",
+        "secondaryColor": "#452711",
+        "pattern": "plain"
+      }
+    },
+    {
+      "id": "toptex_dirt",
+      "type": "TopTextureComponent",
+      "data": {
+        "primaryColor": "#5c3a21",
+        "secondaryColor": "#452711",
+        "pattern": "plain"
+      }
+    },
+    {
+      "id": "sidetex_dirt",
+      "type": "SideTextureComponent",
+      "data": {
+        "primaryColor": "#5c3a21",
+        "secondaryColor": "#452711",
+        "pattern": "dirt_depth",
+        "defaultWallHeight": 12
+      }
+    },
+    {
+      "id": "solid_dirt",
+      "type": "SolidComponent",
+      "data": { "solid": false }
+    },
+    {
+      "id": "break_dirt",
+      "type": "BreakableComponent",
+      "data": {
+        "hardness": 1,
+        "requiredToolTag": "shovel",
+        "minToolStrength": 1,
+        "dropItems": [{ "type": "fiber", "count": 1, "chance": 0.5 }]
+      }
+    }
+  ]
+}

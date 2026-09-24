@@ -1,0 +1,49 @@
+{
+  "id": "wooden_axe",
+  "nome": "Machado Rústico",
+  "categoria": "tool",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "emoji",
+        "value": "🪓",
+        "accentColor": "#d97706"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Machado simples de madeira para agilizar o corte de troncos e galhos.",
+        "categoryName": "Ferramenta"
+      }
+    },
+    {
+      "id": "durability_01",
+      "type": "durability",
+      "data": {
+        "maxDurability": 60
+      }
+    },
+    {
+      "id": "tool_01",
+      "type": "tool",
+      "data": {
+        "toolType": "axe",
+        "strength": 3,
+        "damage": 2,
+        "speed": 1.2,
+        "effectiveTags": ["choppable", "wood", "foliage"]
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 1
+      }
+    }
+  ]
+}

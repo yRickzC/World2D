@@ -1,0 +1,6 @@
+{
+  "name": "Mundo Aberto 2D",
+  "description": "Jogo 2D de mundo aberto procedural com ciclo dia/noite, sistema de blocos, itens e entidades componentizados (ECS), Módulo de Edição de Mundo e Sistema de Clima Hierárquico com Chuva, Neblina e Overrides por Bioma/Região.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

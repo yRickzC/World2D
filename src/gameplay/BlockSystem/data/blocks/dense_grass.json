@@ -1,0 +1,56 @@
+{
+  "id": "dense_grass",
+  "name": "Grama Densa",
+  "category": "natural",
+  "tags": ["ground", "soil", "grass", "walkable", "plantable", "diggable"],
+  "components": [
+    {
+      "id": "emoji_dense",
+      "type": "EmojiIconComponent",
+      "data": { "emoji": "🌿" }
+    },
+    {
+      "id": "colortex_dense",
+      "type": "ColorTextureComponent",
+      "data": {
+        "primaryColor": "#22c55e",
+        "secondaryColor": "#16a34a",
+        "pattern": "blades"
+      }
+    },
+    {
+      "id": "toptex_dense",
+      "type": "TopTextureComponent",
+      "data": {
+        "primaryColor": "#22c55e",
+        "secondaryColor": "#15803d",
+        "pattern": "blades"
+      }
+    },
+    {
+      "id": "sidetex_dense",
+      "type": "SideTextureComponent",
+      "data": {
+        "primaryColor": "#452711",
+        "secondaryColor": "#2e190b",
+        "pattern": "dirt_depth",
+        "defaultWallHeight": 12
+      }
+    },
+    {
+      "id": "solid_dense",
+      "type": "SolidComponent",
+      "data": { "solid": false }
+    },
+    {
+      "id": "break_dense",
+      "type": "BreakableComponent",
+      "data": {
+        "hardness": 1,
+        "requiredToolTag": "shovel",
+        "minToolStrength": 1,
+        "dropItems": [{ "type": "seed", "count": 1, "chance": 0.5 }]
+      }
+    }
+  ]
+}

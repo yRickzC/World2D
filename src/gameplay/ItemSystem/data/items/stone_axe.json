@@ -1,0 +1,49 @@
+{
+  "id": "stone_axe",
+  "nome": "Machado de Pedra",
+  "categoria": "tool",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "emoji",
+        "value": "🪓",
+        "accentColor": "#78716c"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Machado robusto com lâmina de pedra lascada. Corta madeira com mais rapidez.",
+        "categoryName": "Ferramenta"
+      }
+    },
+    {
+      "id": "durability_01",
+      "type": "durability",
+      "data": {
+        "maxDurability": 130
+      }
+    },
+    {
+      "id": "tool_01",
+      "type": "tool",
+      "data": {
+        "toolType": "axe",
+        "strength": 5,
+        "damage": 3,
+        "speed": 1.5,
+        "effectiveTags": ["choppable", "wood", "foliage"]
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 1
+      }
+    }
+  ]
+}

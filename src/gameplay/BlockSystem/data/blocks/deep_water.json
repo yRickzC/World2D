@@ -1,0 +1,40 @@
+{
+  "id": "deep_water",
+  "name": "Água Profunda",
+  "category": "liquid",
+  "tags": ["fluid", "water", "unnavigable"],
+  "components": [
+    {
+      "id": "emoji_deepwater",
+      "type": "EmojiIconComponent",
+      "data": { "emoji": "🌊" }
+    },
+    {
+      "id": "colortex_deepwater",
+      "type": "ColorTextureComponent",
+      "data": {
+        "primaryColor": "#1d4ed8",
+        "secondaryColor": "#2563eb",
+        "pattern": "wave"
+      }
+    },
+    {
+      "id": "toptex_deepwater",
+      "type": "TopTextureComponent",
+      "data": {
+        "primaryColor": "#1d4ed8",
+        "secondaryColor": "#2563eb",
+        "pattern": "wave"
+      }
+    },
+    {
+      "id": "fluid_deepwater",
+      "type": "FluidComponent",
+      "data": {
+        "isFluid": true,
+        "swimSpeedMultiplier": 0.3,
+        "drownHazard": true
+      }
+    }
+  ]
+}

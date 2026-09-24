@@ -1,0 +1,42 @@
+{
+  "id": "bread",
+  "nome": "Pão Rústico",
+  "categoria": "food",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "emoji",
+        "value": "🍞",
+        "accentColor": "#d97706"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Pão caseiro quentinho assado com grãos e fibras douradas. Recupera bastante energia.",
+        "categoryName": "Alimento",
+        "lore": "Fornada crocante perfumada com trigo silvestre."
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 64
+      }
+    },
+    {
+      "id": "food_01",
+      "type": "food",
+      "data": {
+        "energyRestored": 35,
+        "healthRestored": 10,
+        "prompt": "Comer com Botão Direito",
+        "soundEffect": "eat"
+      }
+    }
+  ]
+}

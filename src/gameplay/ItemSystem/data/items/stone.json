@@ -1,0 +1,31 @@
+{
+  "id": "stone",
+  "nome": "Pedra Lascada",
+  "categoria": "material",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "emoji",
+        "value": "🪨",
+        "accentColor": "#78716c"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Fragmentos sólidos de rocha recolhidos do chão ou minerados de pedreiras.",
+        "categoryName": "Material Mineral"
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 64
+      }
+    }
+  ]
+}

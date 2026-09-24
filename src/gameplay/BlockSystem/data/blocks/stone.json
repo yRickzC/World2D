@@ -1,0 +1,58 @@
+{
+  "id": "stone",
+  "name": "Rocha Sólida",
+  "category": "natural",
+  "tags": ["solid", "stone", "mineable"],
+  "components": [
+    {
+      "id": "emoji_stone",
+      "type": "EmojiIconComponent",
+      "data": { "emoji": "🪨" }
+    },
+    {
+      "id": "colortex_stone",
+      "type": "ColorTextureComponent",
+      "data": {
+        "primaryColor": "#64748b",
+        "secondaryColor": "#475569",
+        "pattern": "checker"
+      }
+    },
+    {
+      "id": "toptex_stone",
+      "type": "TopTextureComponent",
+      "data": {
+        "primaryColor": "#64748b",
+        "secondaryColor": "#475569",
+        "accentColor": "#334155",
+        "pattern": "stone_cobble"
+      }
+    },
+    {
+      "id": "sidetex_stone",
+      "type": "SideTextureComponent",
+      "data": {
+        "primaryColor": "#475569",
+        "secondaryColor": "#334155",
+        "shadowColor": "rgba(0, 0, 0, 0.45)",
+        "pattern": "stone_brick",
+        "defaultWallHeight": 14
+      }
+    },
+    {
+      "id": "solid_stone",
+      "type": "SolidComponent",
+      "data": { "solid": true }
+    },
+    {
+      "id": "break_stone",
+      "type": "BreakableComponent",
+      "data": {
+        "hardness": 4,
+        "requiredToolTag": "pickaxe",
+        "minToolStrength": 1,
+        "dropItems": [{ "type": "stick", "count": 2, "chance": 0.5 }]
+      }
+    }
+  ]
+}

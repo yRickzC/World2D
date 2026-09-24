@@ -1,0 +1,16 @@
+{
+  "type": "durability",
+  "name": "Durability",
+  "version": "1.0.0",
+  "description": "Componente dinâmico que rastreia vida útil e desgaste de ferramentas e equipamentos",
+  "isDynamic": true,
+  "properties": {
+    "maxDurability": {
+      "type": "number",
+      "required": true,
+      "default": 100,
+      "min": 1,
+      "description": "Durabilidade máxima que o item possui ao ser forjado ou reparado"
+    }
+  }
+}

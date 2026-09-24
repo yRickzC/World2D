@@ -1,0 +1,37 @@
+{
+  "type": "tool",
+  "name": "Tool",
+  "version": "1.0.0",
+  "description": "Propriedades de ferramentas operacionais (machado, picareta, pá, etc.)",
+  "isDynamic": false,
+  "properties": {
+    "toolType": {
+      "type": "string",
+      "required": true,
+      "allowedValues": ["axe", "pickaxe", "shovel", "watering_tool", "hoe", "hammer"],
+      "default": "pickaxe",
+      "description": "Categoria de ferramenta funcional"
+    },
+    "strength": {
+      "type": "number",
+      "required": false,
+      "default": 2,
+      "min": 1,
+      "description": "Poder de mineração/corte aplicado a alvos correspondentes"
+    },
+    "damage": {
+      "type": "number",
+      "required": false,
+      "default": 1,
+      "min": 0,
+      "description": "Dano causado ao atingir criaturas"
+    },
+    "speed": {
+      "type": "number",
+      "required": false,
+      "default": 1.2,
+      "min": 0.1,
+      "description": "Multiplicador de velocidade de ação"
+    }
+  }
+}

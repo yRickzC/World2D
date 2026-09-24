@@ -1,0 +1,48 @@
+{
+  "id": "watering_can",
+  "nome": "Regador de Metal",
+  "categoria": "tool",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "emoji",
+        "value": "🫗",
+        "accentColor": "#0ea5e9"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Regador para irrigar plantios e manter a terra úmida.",
+        "categoryName": "Utilitário"
+      }
+    },
+    {
+      "id": "durability_01",
+      "type": "durability",
+      "data": {
+        "maxDurability": 100
+      }
+    },
+    {
+      "id": "tool_01",
+      "type": "tool",
+      "data": {
+        "toolType": "watering_tool",
+        "strength": 1,
+        "speed": 1.0,
+        "effectiveTags": ["tilled_dirt", "crops"]
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 1
+      }
+    }
+  ]
+}

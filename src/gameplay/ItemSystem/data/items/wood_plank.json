@@ -1,0 +1,41 @@
+{
+  "id": "wood_plank",
+  "nome": "Tábua de Madeira",
+  "categoria": "material",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "color",
+        "color": "#b45309",
+        "shape": "rounded",
+        "label": "PLANK",
+        "accentColor": "#d97706"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Tábua de madeira aplainada e pronta para construção de pisos e estruturas.",
+        "categoryName": "Material Refinado"
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 64
+      }
+    },
+    {
+      "id": "block_item_01",
+      "type": "block_item",
+      "data": {
+        "blockIdToPlace": "wood_plank",
+        "validTileTags": ["walkable", "ground", "dug", "solid", "plank", "buildable", "soil"]
+      }
+    }
+  ]
+}

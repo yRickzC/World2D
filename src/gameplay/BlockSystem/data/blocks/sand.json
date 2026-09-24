@@ -1,0 +1,56 @@
+{
+  "id": "sand",
+  "name": "Areia Costeira",
+  "category": "natural",
+  "tags": ["ground", "sand", "walkable", "diggable"],
+  "components": [
+    {
+      "id": "emoji_sand",
+      "type": "EmojiIconComponent",
+      "data": { "emoji": "🏖️" }
+    },
+    {
+      "id": "colortex_sand",
+      "type": "ColorTextureComponent",
+      "data": {
+        "primaryColor": "#e2c589",
+        "secondaryColor": "#cbb070",
+        "pattern": "speckle"
+      }
+    },
+    {
+      "id": "toptex_sand",
+      "type": "TopTextureComponent",
+      "data": {
+        "primaryColor": "#e2c589",
+        "secondaryColor": "#cbb070",
+        "pattern": "speckle"
+      }
+    },
+    {
+      "id": "sidetex_sand",
+      "type": "SideTextureComponent",
+      "data": {
+        "primaryColor": "#b89d6c",
+        "secondaryColor": "#967c4f",
+        "pattern": "shaded_bevel",
+        "defaultWallHeight": 10
+      }
+    },
+    {
+      "id": "solid_sand",
+      "type": "SolidComponent",
+      "data": { "solid": false }
+    },
+    {
+      "id": "break_sand",
+      "type": "BreakableComponent",
+      "data": {
+        "hardness": 1,
+        "requiredToolTag": "shovel",
+        "minToolStrength": 1,
+        "dropItems": []
+      }
+    }
+  ]
+}

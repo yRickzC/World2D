@@ -1,0 +1,50 @@
+{
+  "id": "diamond_pickaxe",
+  "nome": "Picareta de Diamante",
+  "categoria": "tool",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "emoji",
+        "value": "💎",
+        "accentColor": "#38bdf8"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Picareta lendária de diamante reluzente. Mineração com força e velocidade incomparáveis.",
+        "categoryName": "Ferramenta Rara",
+        "lore": "Forjada com os cristais mais puros do subterrâneo."
+      }
+    },
+    {
+      "id": "durability_01",
+      "type": "durability",
+      "data": {
+        "maxDurability": 1500
+      }
+    },
+    {
+      "id": "tool_01",
+      "type": "tool",
+      "data": {
+        "toolType": "pickaxe",
+        "strength": 12,
+        "damage": 8,
+        "speed": 2.5,
+        "effectiveTags": ["mineable", "stone", "rock", "obsidian"]
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 1
+      }
+    }
+  ]
+}

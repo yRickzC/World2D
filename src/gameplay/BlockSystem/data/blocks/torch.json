@@ -1,0 +1,35 @@
+{
+  "id": "torch",
+  "name": "Tocha Acesa",
+  "category": "utility",
+  "tags": ["light_source", "walkable"],
+  "components": [
+    {
+      "id": "emoji_torch",
+      "type": "EmojiIconComponent",
+      "data": { "emoji": "🔥" }
+    },
+    {
+      "id": "light_torch",
+      "type": "LightComponent",
+      "data": {
+        "intensity": 0.95,
+        "radius": 140,
+        "color": "#f59e0b"
+      }
+    },
+    {
+      "id": "solid_torch",
+      "type": "SolidComponent",
+      "data": { "solid": false }
+    },
+    {
+      "id": "break_torch",
+      "type": "BreakableComponent",
+      "data": {
+        "hardness": 1,
+        "dropItems": [{ "type": "stick", "count": 1, "chance": 1.0 }]
+      }
+    }
+  ]
+}

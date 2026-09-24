@@ -1,0 +1,27 @@
+{
+  "type": "description",
+  "name": "Description",
+  "version": "1.0.0",
+  "description": "Metadados textuais de descrição, categoria legível e lore do item",
+  "isDynamic": false,
+  "properties": {
+    "text": {
+      "type": "string",
+      "required": true,
+      "default": "Descrição do item.",
+      "description": "Texto explicativo principal do item exibido no tooltip"
+    },
+    "categoryName": {
+      "type": "string",
+      "required": false,
+      "default": "Item",
+      "description": "Nome da categoria exibido amigavelmente na interface"
+    },
+    "lore": {
+      "type": "string",
+      "required": false,
+      "default": "",
+      "description": "História ou curiosidade imersiva sobre o item"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "stack",
+  "name": "Stack",
+  "version": "1.0.0",
+  "description": "Controla capacidade de empilhamento de itens em slots de inventário",
+  "isDynamic": true,
+  "properties": {
+    "maxStack": {
+      "type": "number",
+      "required": true,
+      "default": 64,
+      "min": 1,
+      "max": 999,
+      "description": "Quantidade máxima que pode ser agrupada no mesmo slot"
+    }
+  }
+}

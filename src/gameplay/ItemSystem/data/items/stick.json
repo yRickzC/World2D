@@ -1,0 +1,31 @@
+{
+  "id": "stick",
+  "nome": "Graveto",
+  "categoria": "material",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "emoji",
+        "value": "🥢",
+        "accentColor": "#b45309"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Pequenos gravetos de madeira recolhidos da vegetação ou galhos caídos.",
+        "categoryName": "Material"
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 64
+      }
+    }
+  ]
+}

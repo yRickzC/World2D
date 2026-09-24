@@ -1,0 +1,56 @@
+{
+  "id": "grass",
+  "name": "Grama Silvestre",
+  "category": "natural",
+  "tags": ["ground", "soil", "grass", "walkable", "plantable", "diggable"],
+  "components": [
+    {
+      "id": "emoji_grass",
+      "type": "EmojiIconComponent",
+      "data": { "emoji": "🌱" }
+    },
+    {
+      "id": "colortex_grass",
+      "type": "ColorTextureComponent",
+      "data": {
+        "primaryColor": "#4ade80",
+        "secondaryColor": "#45d47a",
+        "pattern": "blades"
+      }
+    },
+    {
+      "id": "toptex_grass",
+      "type": "TopTextureComponent",
+      "data": {
+        "primaryColor": "#4ade80",
+        "secondaryColor": "#15803d",
+        "pattern": "blades"
+      }
+    },
+    {
+      "id": "sidetex_grass",
+      "type": "SideTextureComponent",
+      "data": {
+        "primaryColor": "#5c3a21",
+        "secondaryColor": "#452711",
+        "pattern": "dirt_depth",
+        "defaultWallHeight": 12
+      }
+    },
+    {
+      "id": "solid_grass",
+      "type": "SolidComponent",
+      "data": { "solid": false }
+    },
+    {
+      "id": "break_grass",
+      "type": "BreakableComponent",
+      "data": {
+        "hardness": 1,
+        "requiredToolTag": "shovel",
+        "minToolStrength": 1,
+        "dropItems": [{ "type": "seed", "count": 1, "chance": 0.35 }]
+      }
+    }
+  ]
+}

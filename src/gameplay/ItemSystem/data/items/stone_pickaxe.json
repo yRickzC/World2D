@@ -1,0 +1,49 @@
+{
+  "id": "stone_pickaxe",
+  "nome": "Picareta de Pedra",
+  "categoria": "tool",
+  "components": [
+    {
+      "id": "render_01",
+      "type": "render",
+      "data": {
+        "renderer": "emoji",
+        "value": "⛏️",
+        "accentColor": "#64748b"
+      }
+    },
+    {
+      "id": "desc_01",
+      "type": "description",
+      "data": {
+        "text": "Picareta com ponta de pedra rígida, ideal para minerar minérios comuns.",
+        "categoryName": "Ferramenta"
+      }
+    },
+    {
+      "id": "durability_01",
+      "type": "durability",
+      "data": {
+        "maxDurability": 130
+      }
+    },
+    {
+      "id": "tool_01",
+      "type": "tool",
+      "data": {
+        "toolType": "pickaxe",
+        "strength": 5,
+        "damage": 3,
+        "speed": 1.5,
+        "effectiveTags": ["mineable", "stone", "rock"]
+      }
+    },
+    {
+      "id": "stack_01",
+      "type": "stack",
+      "data": {
+        "maxStack": 1
+      }
+    }
+  ]
+}
